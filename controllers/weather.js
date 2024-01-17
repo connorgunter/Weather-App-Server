@@ -16,6 +16,17 @@ const search = async (req, res) => {
     res.status(400).json({ err });
   }
 };
+
+async function favorites(req,res,next) {
+  try {
+    res.json(await People.create(req.body));
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+
 module.exports = {
   search,
+  favorites
 };
