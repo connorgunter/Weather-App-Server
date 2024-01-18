@@ -1,5 +1,6 @@
 const express = require("express");
 const { Weather } = require("../models/weather");
+const { User } = require("../models/user")
 const ROOT_URL = "http://api.weatherapi.com/v1/forecast.json?";
 const token = process.env.API_KEY;
 // key=a0b781efac804b38962204907240901&q=03901"
@@ -19,7 +20,7 @@ const search = async (req, res) => {
 
 async function favorites(req,res,next) {
   try {
-    res.json(await People.create(req.body));
+    res.json(await User.create(req.body));
   } catch (error) {
     res.status(400).json(error);
   }
