@@ -45,9 +45,22 @@ async function index(req, res) {
     console.log(err)
   }
 }
+async function destroy(req, res, next) {
+  try {
+    const userFav = await User.findOne({'favorites._id': req.params.id})
+    console.log("userFav", userFav.favorites)
+    userFav.favorites.id(req.params.id).deleteOne()
+    await userFav.save()
+    res.status(200).json({delete: "deleted!"});
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+}
+
 
 module.exports = {
   search,
   favorites,
-  index
+  index,
+  delete: destroy
 };
