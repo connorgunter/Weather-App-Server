@@ -17,6 +17,7 @@ const search = async (req, res) => {
     res.status(400).json({ err });
   }
 };
+
 async function favorites(req, res, next) {
 try {
   const user = await User.findOne({ authId: req.body.authId })
@@ -45,10 +46,10 @@ async function index(req, res) {
     console.log(err)
   }
 }
+
 async function destroy(req, res, next) {
   try {
     const userFav = await User.findOne({'favorites._id': req.params.id})
-    console.log("userFav", userFav.favorites)
     userFav.favorites.id(req.params.id).deleteOne()
     await userFav.save()
     res.status(200).json({delete: "deleted!"});
@@ -57,10 +58,21 @@ async function destroy(req, res, next) {
   }
 }
 
+async function show(req, res, next) {
+  try {
+    const favDetails = await User.findOne({'favorites._id': req.params.id})
+    console.log(favDetails.favorites.id(req.params.id))
+    res.json(favDetails.favorites.id(req.params.id))
+  } catch(err) {
+    res.status(400).json({err: err.message})
+  }
+}
+
 
 module.exports = {
   search,
   favorites,
   index,
-  delete: destroy
+  delete: destroy,
+  show
 };
